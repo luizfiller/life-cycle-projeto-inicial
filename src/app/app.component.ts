@@ -22,6 +22,11 @@ export class AppComponent implements OnInit, DoCheck {
     this.itemParaSerEditado = item;
   }
 
+  deletarItem(id: number) {
+    const index = this.listaDeCompra.findIndex((item) => item.id === id);
+    this.listaDeCompra.splice(index, 1);
+  }
+
   // DoCheck verifica qualquer alteração de dentro de um componente. No entanto, a cada mudança é feita uma nova chamada, podendo, assim, diminuir a performance da aplicação
   // OnChange verifica apenas as alterações de propriedades de entrada de um component que tenha o decorator '@Input()'
   ngDoCheck(): void {
