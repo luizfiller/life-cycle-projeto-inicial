@@ -1,26 +1,31 @@
 import { ListaDeCompraService } from './service/lista-de-compra.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { Item } from './interfaces/iItem';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit{
-
+export class AppComponent implements OnInit, DoCheck {
   title = 'app-lista-de-compras';
-  listaDeCompra! : Array<Item>;
+  listaDeCompra!: Array<Item>;
   itemParaSerEditado!: Item;
 
-  constructor( private listaService: ListaDeCompraService) { }
+  constructor(private listaService: ListaDeCompraService) {}
 
   ngOnInit(): void {
-   this.listaDeCompra = this.listaService.getListaDeCompra();
+    this.listaDeCompra = this.listaService.getListaDeCompra();
   }
 
   editarItem(item: Item) {
     this.itemParaSerEditado = item;
+  }
 
+  // DoCheck verifica qualquer alteração de dentro de um componente. No entanto, a cada mudança é feita uma nova chamada, podendo, assim, diminuir a performance da aplicação
+  // OnChange verifica apenas as alterações de propriedades de entrada de um component que tenha o decorator '@Input()'
+  ngDoCheck(): void {
+    console.log('DoCheck foi chamado');
+    this.listaService.atualizarLocalStorage();
   }
 }
